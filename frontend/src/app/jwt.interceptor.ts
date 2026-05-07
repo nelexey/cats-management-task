@@ -1,11 +1,21 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('access_token');
+  const authService = inject(AuthService);
+  const token = authService.getToken();
+
+  if (req.url.includes('/auth/login') || req.url.includes('/auth/register')) {
+    return next(req);
+  }
+
   if (token) {
-    req = req.clone({
+    const cloned = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` }
     });
+    return next(cloned);
   }
+
   return next(req);
 };
