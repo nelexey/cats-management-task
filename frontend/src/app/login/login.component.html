@@ -1,9 +1,13 @@
 <div style="display: flex; justify-content: center; margin-top: 100px;">
-  <mat-card style="width: 400px; padding: 20px;">
+  <mat-card style="width: 400px; padding: 20px; position: relative; overflow: hidden;">
     
+    @if (isLoading) {
+      <mat-progress-bar mode="indeterminate" style="position: absolute; top: 0; left: 0; right: 0;"></mat-progress-bar>
+    }
+
     <mat-card-header>
       <mat-card-title>
-        @if (isLoginMode) { Вход } @else { Регистрация }
+        @if (isLoginMode) { Вход в систему } @else { Регистрация заводчика }
       </mat-card-title>
     </mat-card-header>
 
@@ -11,22 +15,22 @@
       <form (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column; margin-top: 20px;">
         <mat-form-field>
           <mat-label>Логин</mat-label>
-          <input matInput [(ngModel)]="credentials.username" name="username" required>
+          <input matInput [(ngModel)]="credentials.username" name="username" required [disabled]="isLoading">
         </mat-form-field>
         
         <mat-form-field>
           <mat-label>Пароль</mat-label>
-          <input matInput type="password" [(ngModel)]="credentials.password" name="password" required>
+          <input matInput type="password" [(ngModel)]="credentials.password" name="password" required [disabled]="isLoading">
         </mat-form-field>
         
-        <button mat-raised-button color="primary" type="submit">
+        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
           @if (isLoginMode) { Войти } @else { Зарегистрироваться }
         </button>
       </form>
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button (click)="toggleMode()" type="button">
+      <button mat-button (click)="toggleMode()" type="button" [disabled]="isLoading" style="width: 100%;">
         @if (isLoginMode) { Нет аккаунта? Создать } @else { Есть аккаунт? Войти }
       </button>
     </mat-card-actions>
