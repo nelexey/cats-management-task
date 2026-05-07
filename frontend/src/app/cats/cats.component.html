@@ -1,6 +1,10 @@
 <mat-toolbar color="primary">
   <span>Панель заводчика</span>
   <span style="flex: 1 1 auto;"></span>
+  
+  <button mat-button routerLink="/chats" style="margin-right: 10px;">
+    <mat-icon>forum</mat-icon> Сообщения
+  </button>
   <button mat-icon-button (click)="logout()">
     <mat-icon>logout</mat-icon>
   </button>
