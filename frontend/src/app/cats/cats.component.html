@@ -1,0 +1,82 @@
+<mat-toolbar color="primary">
+  <span>Панель заводчика</span>
+  <span style="flex: 1 1 auto;"></span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div style="padding: 20px; display: flex; gap: 20px; align-items: flex-start;">
+  
+  <mat-card style="width: 350px;">
+    <mat-card-header>
+      <mat-card-title>
+        @if (isEditMode) { Редактировать кота } @else { Добавить кота }
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="saveCat()" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+        
+        <mat-form-field>
+          <mat-label>Имя кота</mat-label>
+          <input matInput [(ngModel)]="currentCat.name" name="name" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Дата рождения (YYYY-MM-DD)</mat-label>
+          <input matInput type="date" [(ngModel)]="currentCat.birth_date" name="birth_date" required>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Пол</mat-label>
+          <mat-select [(ngModel)]="currentCat.gender" name="gender" required>
+            <mat-option value="M">Кот</mat-option>
+            <mat-option value="F">Кошка</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Окрас</mat-label>
+          <mat-select [(ngModel)]="currentCat.color" name="color" required>
+            <mat-option value="black">Черный</mat-option>
+            <mat-option value="colored">Цветной</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div style="display: flex; gap: 10px;">
+          <button mat-raised-button color="primary" type="submit" style="flex: 1;">
+            @if (isEditMode) { Сохранить } @else { Добавить }
+          </button>
+          @if (isEditMode) {
+            <button mat-button type="button" (click)="resetForm()">Отмена</button>
+          }
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div style="flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+    @for (cat of cats; track cat.id) {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ cat.name }}</mat-card-title>
+          <mat-card-subtitle>{{ cat.gender === 'M' ? 'Кот' : 'Кошка' }}, {{ cat.color === 'black' ? 'Черный' : 'Цветной' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Дата рождения: {{ cat.birth_date }}</p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-icon-button color="primary" (click)="editCat(cat)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteCat(cat.id!)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    } @empty {
+      <div style="padding: 20px; color: gray;">У вас пока нет питомцев. Создайте первого!</div>
+    }
+  </div>
+
+</div>
