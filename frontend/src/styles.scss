@@ -1,4 +1,65 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss */
+@use '@angular/material' as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@include mat.core();
+
+// Современная тема Material 3 (Angular 18)
+// Используем оранжево-желтую базу для соответствия нашему дизайну
+$custom-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$orange-palette
+    // tertiary и neutral удалены, Angular Material сгенерирует их сам
+  )
+));
+
+html {
+  @include mat.all-component-themes($custom-theme);
+}
+
+// Глобальные переменные и базовые стили
+:root {
+  --bg-color: #f8f9fa;
+  --surface-color: #ffffff;
+  --text-main: #212529;
+  --text-muted: #6c757d;
+  --border-radius: 16px;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --accent-color: #d4a373; /* Бежево-желтый акцент */
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+}
+
+// Переопределение базовых карточек Material
+.mat-mdc-card {
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--shadow-md) !important;
+  background-color: var(--surface-color) !important;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+// Кнопки
+.mat-mdc-button-base {
+  border-radius: 8px !important;
+}
+
+// Тулбар
+.mat-toolbar.mat-primary {
+  background-color: var(--surface-color);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+// Инпуты (сделать более "чистыми")
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: rgba(0,0,0,0.02) !important;
+  border-radius: 8px 8px 0 0 !important;
+}

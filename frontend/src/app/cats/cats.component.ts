@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CatService, Cat } from '../cat.service';
 import { AuthService } from '../auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-cats',
@@ -21,7 +22,8 @@ import { AuthService } from '../auth.service';
     MatSelectModule,
     MatIconModule,
     MatToolbarModule,
-    RouterModule
+    RouterModule,
+    DatePipe
   ],
   templateUrl: './cats.component.html',
   styleUrl: './cats.component.scss'
@@ -76,6 +78,10 @@ export class CatsComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  getCatEmoji(color: string): string {
+    return color === 'black' ? '🐈‍⬛' : '🐈';
   }
 
   private getEmptyCat(): Cat {

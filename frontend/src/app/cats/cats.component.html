@@ -1,54 +1,52 @@
-<mat-toolbar color="primary">
-  <span>Панель заводчика</span>
-  <span style="flex: 1 1 auto;"></span>
-  
-  <button mat-button routerLink="/chats" style="margin-right: 10px;">
+<mat-toolbar class="main-toolbar">
+  <span class="logo">🐾 Кошки</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/chats" class="nav-btn">
     <mat-icon>forum</mat-icon> Сообщения
   </button>
-  <button mat-icon-button (click)="logout()">
+  <button mat-icon-button (click)="logout()" color="accent">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>
 
-<div style="padding: 20px; display: flex; gap: 20px; align-items: flex-start;">
+<div class="content-container">
   
-  <mat-card style="width: 350px;">
+  <mat-card class="form-card">
     <mat-card-header>
-      <mat-card-title>
-        @if (isEditMode) { Редактировать кота } @else { Добавить кота }
-      </mat-card-title>
+      <mat-card-title>@if (isEditMode) { Редактировать } @else { Новый питомец }</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form (ngSubmit)="saveCat()" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-        
-        <mat-form-field>
-          <mat-label>Имя кота</mat-label>
+      <form (ngSubmit)="saveCat()" class="cat-form">
+        <mat-form-field appearance="fill">
+          <mat-label>Имя</mat-label>
           <input matInput [(ngModel)]="currentCat.name" name="name" required>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Дата рождения (YYYY-MM-DD)</mat-label>
+        <mat-form-field appearance="fill">
+          <mat-label>Дата рождения</mat-label>
           <input matInput type="date" [(ngModel)]="currentCat.birth_date" name="birth_date" required>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Пол</mat-label>
-          <mat-select [(ngModel)]="currentCat.gender" name="gender" required>
-            <mat-option value="M">Кот</mat-option>
-            <mat-option value="F">Кошка</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="row-fields">
+          <mat-form-field appearance="fill">
+            <mat-label>Пол</mat-label>
+            <mat-select [(ngModel)]="currentCat.gender" name="gender" required>
+              <mat-option value="M">Кот</mat-option>
+              <mat-option value="F">Кошка</mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Окрас</mat-label>
-          <mat-select [(ngModel)]="currentCat.color" name="color" required>
-            <mat-option value="black">Черный</mat-option>
-            <mat-option value="colored">Цветной</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Окрас</mat-label>
+            <mat-select [(ngModel)]="currentCat.color" name="color" required>
+              <mat-option value="black">Черный 🐈‍⬛</mat-option>
+              <mat-option value="colored">Цветной 🐈</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-        <div style="display: flex; gap: 10px;">
-          <button mat-raised-button color="primary" type="submit" style="flex: 1;">
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" class="full-width">
             @if (isEditMode) { Сохранить } @else { Добавить }
           </button>
           @if (isEditMode) {
@@ -59,17 +57,17 @@
     </mat-card-content>
   </mat-card>
 
-  <div style="flex: 1; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+  <div class="cats-grid">
     @for (cat of cats; track cat.id) {
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>{{ cat.name }}</mat-card-title>
-          <mat-card-subtitle>{{ cat.gender === 'M' ? 'Кот' : 'Кошка' }}, {{ cat.color === 'black' ? 'Черный' : 'Цветной' }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Дата рождения: {{ cat.birth_date }}</p>
-        </mat-card-content>
-        <mat-card-actions align="end">
+      <mat-card class="cat-card">
+        <div class="cat-card-layout">
+          <div class="cat-emoji">{{ getCatEmoji(cat.color) }}</div>
+          <div class="cat-info">
+            <h3 class="cat-name">{{ cat.name }}</h3>
+            <p class="cat-meta">{{ cat.gender === 'M' ? 'Кот' : 'Кошка' }}, {{ cat.birth_date | date:'dd.MM.yyyy' }}</p>
+          </div>
+        </div>
+        <mat-card-actions class="card-actions">
           <button mat-icon-button color="primary" (click)="editCat(cat)">
             <mat-icon>edit</mat-icon>
           </button>
@@ -79,8 +77,7 @@
         </mat-card-actions>
       </mat-card>
     } @empty {
-      <div style="padding: 20px; color: gray;">У вас пока нет питомцев. Создайте первого!</div>
+      <div class="empty-state">У вас пока нет питомцев.</div>
     }
   </div>
-
 </div>
